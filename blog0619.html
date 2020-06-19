@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
+    <style type="text/css">
+      #iframe {
+        opacity: 0;
+      }
+      .title {
+        text-align: center;
+        padding: 10px;
+      }
+      .progress {
+        height: 4rem;
+      }
+
+      .cadiv {
+        display: flex;
+        justify-content: center;
+        background: #CCCCCC;
+      }
+
+      #myCanvas {
+        animation: roll linear 2s infinite;
+      }
+
+      @keyframes roll {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        50% {
+          transform: rotate(180deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1 class="title">等待进度条到100%</h1>
+      <div class="progress">
+        <div id="progress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0"
+          aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+          0%
+        </div>
+      </div>
+      <div class="cadiv">
+        <canvas id="myCanvas" width="600" height="400">
+      </div>
+      <div id="iframe"></div>
+    </div>
+
+    <script type="text/javascript">
+      $(function() {
+        // 生成太极图
+        fillTaiji();  
+        let blogStr =
+          '106834323,106801062,106786984,106783663,106781078,106765359,106647522,106646315,106636643,106634537,106619519,106620325,106623829,106622146,106574573,106563430,106570959,106565291,106424387,106423959,106421214,106420405,106410150,106406522,106400071,106377822,106382616,106379955,106334552,106234815,106230951,106193479,106192941,106192115,106191326,106189411,106187088,106186272,106118558,106074906,106054651,106053083,106052540,106050031,105991201,105999177,105998022,105988829,105860090,105844604,105844066,105838888,105770728,105731624,105712987,105712156,105710991,105684298,105683958,105681596,105656801,105656235,105633890,105633490,105559261,105452947,105452422,105435350,105434270,105400285,105414058,105410735,105399969,105368793,105365252,105363163,104316602,105273977,105276111,105275115,105274303,91041323,102721708,102715424,101770241,101768146,101761153,101757931,101757511,101754152,101751324,101166637,101165855,101164908,101164526,101162911,101159755,100764551,97368900,95490357,95482578,95474386,95472627,95455865,95450850,95339855,95355587,95354067,95340146,95169104,94732733,94717697,94714648,93190564,94008671,94005688,94002713,93890556,93885262,93743118,93719894,93716596,93170071,93166690,91876150,91576590,91396239,90949303,90929429,90928463,90926401,90760388,90760170,90757771,90757469,90757345,90754793,90745537,90744269,90744251,90743734,90692283,90672317,90640459,90638714,90515946,90484672,90483749,90445868,90444794,90443257,78686593';
+        const blogNum = blogStr.split(',');
+        let sum = blogNum.length;
+        let length = blogNum.length;
+        let urlhead = 'https://blog.csdn.net/weixin_41229588/article/details/';
+        let timeOut = setInterval(function() {
+          if (length === 0) {
+            clearInterval(timeOut);
+            $("#progress").css("width", "100%").html("100%");
+            return;
+          }
+          let iframe = $('<iframe id="' + blogNum[length - 1] + '" src="' + (urlhead + blogNum[length - 1]) +
+            '" width="50%" height="500"></iframe>');
+          $('#iframe').append(iframe);
+          $("#progress").css("width", ((sum - length) / sum * 100 + "%")).html((parseInt((sum - length) / sum *
+            100) + "%"));
+          setTimeout(function() {
+            $('#iframe').empty();
+          }, 3000)
+          length--;
+        }, 4000)
+      })
+
+      function fillTaiji() {
+        var c = document.getElementById("myCanvas");
+        var cxt = c.getContext("2d");
+        //绘制左侧的白色半圆直径都是150
+        cxt.fillStyle = "#FFFFFF";
+        cxt.beginPath();
+        cxt.arc(300, 200, 150, 1.5 * Math.PI, Math.PI / 2, false);
+        cxt.closePath();
+        cxt.fill();
+        //绘制右侧的黑色半圆
+        cxt.fillStyle = "#000000";
+        cxt.beginPath();
+        cxt.arc(300, 200, 150, Math.PI / 2, 1.5 * Math.PI, false);
+        cxt.closePath();
+        cxt.fill();
+        //绘制下面的黑色圆
+        cxt.fillStyle = "#000000";
+        cxt.beginPath();
+        cxt.arc(300, 275, 75, 0, 2 * Math.PI, false);
+        cxt.closePath();
+        cxt.fill();
+        //绘制上面的白色圆
+        cxt.fillStyle = "#FFFFFF";
+        cxt.beginPath();
+        cxt.arc(300, 125, 75, 0, 2 * Math.PI, false);
+        cxt.closePath();
+        cxt.fill();
+        //绘制两个小圆
+        cxt.fillStyle = "FFFFFF";
+        cxt.beginPath();
+        cxt.arc(300, 275, 10, 0, 2 * Math.PI, false);
+        cxt.closePath();
+        cxt.fill();
+        //绘制黑色小圆
+        cxt.fillStyle = "#000";
+        cxt.beginPath();
+        cxt.arc(300, 125, 10, 0, 2 * Math.PI, false);
+        cxt.closePath();
+        cxt.fill();
+      }
+    </script>
+  </body>
+</html>
