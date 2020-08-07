@@ -96,7 +96,8 @@
            if (length === 0) {
              clearInterval(timeOut);
              $("#progress").css("width", "100%").html("100%");
-             refesh(blogNum);
+             // refesh(blogNum);
+             location.reload();
              return;
            }
            let iframe = $('<iframe id="' + blogNum[length - 1] + '" src="' + (urlhead + blogNum[length - 1]) +
